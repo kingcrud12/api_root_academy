@@ -31,14 +31,6 @@ Root Academy n'est pas seulement une plateforme de cours, c'est un **Learning Ma
 
 ## Stack Technique
 
-### Frontend
-
-- **Framework :** React 18 (Vite)
-- **Stylisation :** Tailwind CSS 4.0 (Aesthetics Premium)
-- **Animations :** Framer Motion
-- **Temps Réel :** Socket.io Client
-- **Gestion d'État :** Zustand & Context API
-
 ### Backend
 
 - **Runtime :** GO
