@@ -14,6 +14,7 @@ type User struct {
 	LastName  string
 	Roles     []Role
 	Email     string
+	Password  string
 
 	InstructorTitle string
 	InstructorBio   string
