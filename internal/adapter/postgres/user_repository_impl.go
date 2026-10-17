@@ -104,7 +104,50 @@ func (r *UserRepositoryImpl) DeleteUser(id string) error {
 	return nil
 }
 
-// scanUser lit une ligne users dans un *user.User. Retourne (nil, nil) si aucune ligne ne correspond.
+func (r *UserRepositoryImpl) GetUsers() []user.User {
+	query := `
+		SELECT id, first_name, last_name, roles, email, password, instructor_title, instructor_bio, avatar
+		FROM users
+	`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil
+	}
+	defer rows.Close()
+
+	var users []user.User
+
+	for rows.Next() {
+		var u user.User
+		var roles string
+
+		err := rows.Scan(
+			&u.ID,
+			&u.FirstName,
+			&u.LastName,
+			&roles,
+			&u.Email,
+			&u.Password,
+			&u.InstructorTitle,
+			&u.InstructorBio,
+			&u.Avatar,
+		)
+		if err != nil {
+			return nil
+		}
+
+		u.Roles = rolesFromString(roles)
+		users = append(users, u)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil
+	}
+
+	return users
+}
+
 func (r *UserRepositoryImpl) scanUser(row *sql.Row) (*user.User, error) {
 	var u user.User
 	var roles string

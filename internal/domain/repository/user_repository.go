@@ -8,4 +8,5 @@ type UserRepository interface {
 	GetUserByID(id string) (*user.User, error)
 	UpdateUser(user *user.User) error
 	DeleteUser(id string) error
+	GetUsers() []user.User
 }
