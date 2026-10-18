@@ -22,7 +22,7 @@ func CreateUser(repo repository.UserRepository, req dto.CreateUserInput) (*dto.U
 		return nil, err
 	}
 
-	if err := repo.CreateUser(newUser); err != nil {
+	if err := repo.SaveUser(newUser); err != nil {
 		return nil, fmt.Errorf("create user: %w", err)
 	}
 
