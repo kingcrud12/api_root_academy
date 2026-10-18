@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"root_academy_go/internal/domain/repository"
 	"root_academy_go/internal/domain/service"
+	"root_academy_go/internal/domain/service/utils"
 	"root_academy_go/internal/http/dto"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func Register(repo repository.UserRepository, c *gin.Context) {
 
 	created, err := service.CreateUser(repo, req)
 	if err != nil {
-		if errors.Is(err, service.ErrEmailAlreadyExists) {
+		if errors.Is(err, utils.ErrEmailAlreadyExists) {
 			c.JSON(http.StatusConflict, gin.H{"error": "Cet email est déjà utilisé."})
 			return
 		}

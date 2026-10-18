@@ -58,8 +58,8 @@ func TestUserNotExist(t *testing.T) {
 func TestEmailFormat(t *testing.T) {
 	var emailRegex = regexp.MustCompile((`^[a-z]+@[a-z]+\.[a-z]{2,}$`))
 
-	userEmailWrongFormat := "dodo.gmail.com"
+	userEmail := "dodo.gmail.com"
 
-	assert.True(t, emailRegex.MatchString(userEmailWrongFormat))
+	assert.True(t, emailRegex.MatchString(userEmail))
 
 }
