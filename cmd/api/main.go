@@ -6,6 +6,7 @@ import (
 	"root_academy_go/internal/platform/db"
 	"root_academy_go/internal/user/adapter/in/web"
 	"root_academy_go/internal/user/adapter/out/persistance"
+	"root_academy_go/internal/user/adapter/out/security"
 	"root_academy_go/internal/user/application/service"
 
 	"github.com/gin-gonic/gin"
@@ -28,7 +29,8 @@ func main() {
 	defer sqlDB.Close()
 
 	userRepo := persistance.NewUserRepositoryAdapter(conn)
-	userService := service.NewUserService(userRepo)
+	passwordHasher := security.NewBcryptPasswordHasher()
+	userService := service.NewUserService(userRepo, passwordHasher)
 	registerController := web.NewRegisterController(userService)
 
 	router := gin.Default()

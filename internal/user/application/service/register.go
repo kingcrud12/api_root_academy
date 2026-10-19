@@ -14,13 +14,14 @@ var email_invalid_error = errors.New("Invalide email format")
 var email_already_exists_error = errors.New("email already exists")
 
 type UserService struct {
-	repo out.IUserRepository
+	repo   out.IUserRepository
+	hasher out.IPasswordHasher
 }
 
 var _ in.RegisterUser = (*UserService)(nil)
 
-func NewUserService(repo out.IUserRepository) *UserService {
-	return &UserService{repo: repo}
+func NewUserService(repo out.IUserRepository, hasher out.IPasswordHasher) *UserService {
+	return &UserService{repo: repo, hasher: hasher}
 }
 
 func (s *UserService) Register(input *dto.Register) error {
@@ -31,6 +32,12 @@ func (s *UserService) Register(input *dto.Register) error {
 		return email_already_exists_error
 	}
 	user := utils.BuildUserFromInput(input)
+
+	hashedPassword, err := s.hasher.HashPassword(user.Password)
+	if err != nil {
+		return fmt.Errorf("erreur lors du hachage du mot de passe")
+	}
+	user.Password = hashedPassword
 
 	if err := s.repo.SaveUser(user); err != nil {
 		return fmt.Errorf("erreur lors de l'inscription en base")
