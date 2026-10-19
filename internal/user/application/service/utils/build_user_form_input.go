@@ -13,6 +13,7 @@ func BuildUserFromInput(input *dto.Register) *model.User {
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
 		Email:     input.Email,
+		Roles:     []model.Role{model.RoleStudent},
 		Password:  input.Password,
 	}
 }

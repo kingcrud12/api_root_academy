@@ -1,6 +1,9 @@
 package persistance
 
-import "root_academy_go/internal/user/domain/model"
+import (
+	"root_academy_go/internal/user/domain/model"
+	"strings"
+)
 
 type UserEntity struct {
 	ID        string `gorm:"column:id;primaryKey"`
@@ -26,6 +29,7 @@ func FromModel(user *model.User) UserEntity {
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Email:     user.Email,
+		Roles:     RolesToString(user.Roles),
 		Password:  user.Password,
 	}
 
@@ -37,7 +41,28 @@ func ToModel(user *UserEntity) model.User {
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Email:     user.Email,
+		Roles:     StringToRoles(user.Roles),
 		Password:  user.Password,
 	}
 
+}
+
+func RolesToString(roles []model.Role) string {
+	strs := make([]string, len(roles))
+	for i, r := range roles {
+		strs[i] = string(r)
+	}
+	return strings.Join(strs, ",")
+}
+
+func StringToRoles(s string) []model.Role {
+	if s == "" {
+		return nil
+	}
+	parts := strings.Split(s, ",")
+	roles := make([]model.Role, len(parts))
+	for i, p := range parts {
+		roles[i] = model.Role(p)
+	}
+	return roles
 }
