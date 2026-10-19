@@ -1,12 +1,6 @@
-package user
+package model
 
-type Role string
-
-const (
-	RoleTeacher Role = "teacher"
-	RoleStudent Role = "student"
-	RoleAdmin   Role = "admin"
-)
+import "github.com/google/uuid"
 
 type User struct {
 	ID        string
@@ -28,4 +22,14 @@ type BillingInfo struct {
 	StripeAccountID          string
 	StripeCustomerID         string
 	StripeOnboardingComplete bool
+}
+
+func CreateUser(FirsName string, LastName string, Email string, Password string) *User {
+	return &User{
+		ID:        uuid.NewString(),
+		FirstName: FirsName,
+		LastName:  LastName,
+		Email:     Email,
+		Password:  Password,
+	}
 }
