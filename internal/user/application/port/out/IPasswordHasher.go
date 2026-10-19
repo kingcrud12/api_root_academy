@@ -1,5 +1,5 @@
 package out
 
 type IPasswordHasher interface {
-	hashpassword(password string) string
+	HashPassword(password string) (string, error)
 }

@@ -4,6 +4,11 @@ import (
 	"log"
 
 	"root_academy_go/internal/platform/db"
+	"root_academy_go/internal/user/adapter/in/web"
+	"root_academy_go/internal/user/adapter/out/persistance"
+	"root_academy_go/internal/user/application/service"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -22,5 +27,14 @@ func main() {
 	}
 	defer sqlDB.Close()
 
-	log.Println("connected to database, migrations applied")
+	userRepo := persistance.NewUserRepositoryAdapter(conn)
+	userService := service.NewUserService(userRepo)
+	registerController := web.NewRegisterController(userService)
+
+	router := gin.Default()
+	router.POST("/register", registerController.Handle)
+
+	if err := router.Run(":8080"); err != nil {
+		log.Fatalf("failed to start server: %v", err)
+	}
 }
